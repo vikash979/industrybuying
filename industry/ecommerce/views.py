@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404,HttpResponse
 from rest_framework import status
 from rest_framework import viewsets,filters
-
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -17,7 +17,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Category,Product
 from . import serializers
 from django.contrib.auth import authenticate
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class CategoryViewset(viewsets.ModelViewSet):
 	queryset = Category.objects.all()
@@ -26,7 +26,8 @@ class CategoryViewset(viewsets.ModelViewSet):
 	filter_backends = [DjangoFilterBackend,filters.SearchFilter]
 	filterset_fields = ['category_name']
 
-	permission_classes = (IsAuthenticated,)
+	# authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsAuthenticated,IsAdminUser)
 
 
 	def create(self, request,*args, **kwargs): 
@@ -44,7 +45,7 @@ class ProductViewset(viewsets.ModelViewSet):
 	search_fields = ['product_name','category__category_name']
 	filter_backends = [DjangoFilterBackend,filters.SearchFilter]
 	filterset_fields = ['product_name']
-	permission_classes = (IsAuthenticated,)
+	permission_classes = (IsAuthenticated,IsAdminUser)
 
 	def create(self, request,*args, **kwargs): 
 		data_error = []
