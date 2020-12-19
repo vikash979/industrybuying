@@ -27,7 +27,7 @@ class CategoryViewset(viewsets.ModelViewSet):
 	filterset_fields = ['category_name']
 
 	# authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsAuthenticated,IsAdminUser)
+	permission_classes = (IsAuthenticated,)
 
 
 	def create(self, request,*args, **kwargs): 
@@ -45,7 +45,7 @@ class ProductViewset(viewsets.ModelViewSet):
 	search_fields = ['product_name','category__category_name']
 	filter_backends = [DjangoFilterBackend,filters.SearchFilter]
 	filterset_fields = ['product_name']
-	permission_classes = (IsAuthenticated,IsAdminUser)
+	permission_classes = (IsAuthenticated,)
 
 	def create(self, request,*args, **kwargs): 
 		data_error = []
