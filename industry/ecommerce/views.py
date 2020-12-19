@@ -18,16 +18,18 @@ from .models import Category,Product
 from . import serializers
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework import authentication
 
 class CategoryViewset(viewsets.ModelViewSet):
+	authentication_classes = [authentication.SessionAuthentication, authentication.TokenAuthentication]
+	permission_classes = (IsAuthenticated,)
 	queryset = Category.objects.all()
 	serializer_class = serializers.CategorySerializer
 	search_fields = ['category_name']
 	filter_backends = [DjangoFilterBackend,filters.SearchFilter]
 	filterset_fields = ['category_name']
 
-	# authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsAuthenticated,)
+	
 
 
 	def create(self, request,*args, **kwargs): 
@@ -46,6 +48,7 @@ class ProductViewset(viewsets.ModelViewSet):
 	filter_backends = [DjangoFilterBackend,filters.SearchFilter]
 	filterset_fields = ['product_name']
 	permission_classes = (IsAuthenticated,)
+	authentication_classes = [authentication.SessionAuthentication, authentication.TokenAuthentication]
 
 	def create(self, request,*args, **kwargs): 
 		data_error = []
